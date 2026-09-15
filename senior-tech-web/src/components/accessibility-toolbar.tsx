@@ -4,11 +4,8 @@ import { Button } from "@/components/ui/button";
 import {
 	AArrowDown,
 	AArrowUp,
-	Minus,
 	Pause,
 	Play,
-	Plus,
-	RotateCcw,
 	Square,
 	Volume2,
 } from "lucide-react";
@@ -52,9 +49,7 @@ export function AccessibilityToolbar() {
 		canDecreaseFontScale,
 		canIncreaseFontScale,
 		decreaseFontScale,
-		fontScale,
 		increaseFontScale,
-		resetFontScale,
 	} = useAccessibility();
 	const { announcement, pause, resume, speak, status, stop } = useSpeech();
 	const location = useLocation();

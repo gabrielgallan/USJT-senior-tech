@@ -25,7 +25,11 @@ export function DefaultLayout() {
 				</div>
 			</header>
 
-			<main className="flex w-full flex-1" id="conteudo-principal" tabIndex={-1}>
+			<main
+				className="flex w-full flex-1"
+				id="conteudo-principal"
+				tabIndex={-1}
+			>
 				<Outlet />
 			</main>
 		</div>

@@ -34,9 +34,8 @@ function getInitialFontScale(): FontScale {
 export function AccessibilityProvider({
 	children,
 }: AccessibilityProviderProps) {
-	const [fontScale, setFontScale] = React.useState<FontScale>(
-		getInitialFontScale,
-	);
+	const [fontScale, setFontScale] =
+		React.useState<FontScale>(getInitialFontScale);
 
 	React.useLayoutEffect(() => {
 		document.documentElement.dataset.fontScale = String(fontScale);

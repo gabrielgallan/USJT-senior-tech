@@ -1,10 +1,6 @@
 import * as React from "react";
 
-export type SpeechStatus =
-	| "idle"
-	| "speaking"
-	| "paused"
-	| "unsupported";
+export type SpeechStatus = "idle" | "speaking" | "paused" | "unsupported";
 
 type SpeechProviderProps = {
 	children: React.ReactNode;
@@ -24,9 +20,7 @@ const SpeechContext = React.createContext<SpeechProviderState | undefined>(
 );
 
 function supportsSpeechSynthesis() {
-	return (
-		"speechSynthesis" in window && "SpeechSynthesisUtterance" in window
-	);
+	return "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
 }
 
 function normalizeSpeechContent(content: string | string[]) {
@@ -76,10 +70,7 @@ export function SpeechProvider({ children }: SpeechProviderProps) {
 		return () => {
 			sessionRef.current += 1;
 			window.speechSynthesis.cancel();
-			window.speechSynthesis.removeEventListener(
-				"voiceschanged",
-				updateVoice,
-			);
+			window.speechSynthesis.removeEventListener("voiceschanged", updateVoice);
 		};
 	}, [supported]);
 
