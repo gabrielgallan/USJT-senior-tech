@@ -1,6 +1,7 @@
 import { useAccessibility } from "@/components/accessibility-provider";
 import { useSpeech } from "@/components/speech-provider";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
 	AArrowDown,
 	AArrowUp,
@@ -49,10 +50,13 @@ export function AccessibilityToolbar() {
 		canDecreaseFontScale,
 		canIncreaseFontScale,
 		decreaseFontScale,
+		fontScale,
 		increaseFontScale,
 	} = useAccessibility();
 	const { announcement, pause, resume, speak, status, stop } = useSpeech();
+
 	const location = useLocation();
+
 	const previousPathRef = React.useRef(location.pathname);
 
 	React.useEffect(() => {
@@ -80,47 +84,49 @@ export function AccessibilityToolbar() {
 		status === "speaking"
 			? "Pausar"
 			: status === "paused"
-				? "Continuar leitura"
+				? "Continuar"
 				: status === "unsupported"
 					? "Áudio indisponível"
-					: "Ouvir esta página";
+					: "Ouvir página";
 
 	return (
-		<div className="flex min-w-0 flex-wrap items-center gap-3">
-			<fieldset className="flex min-w-0 flex-wrap items-center gap-2 border-0 p-0">
+		<div className="flex w-full min-w-0 flex-wrap items-center justify-between gap-2 md:w-auto md:justify-end md:gap-3">
+			<fieldset className="flex min-w-0 items-center gap-2 border-0 p-0">
 				<legend className="sr-only">Ajustar tamanho do texto</legend>
 				<ButtonGroup>
 					<Button
 						aria-label="Diminuir tamanho do texto"
-						className="border-white/50 bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/70"
+						className="size-[44px] border-white/50 bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/70 md:size-11"
 						disabled={!canDecreaseFontScale}
 						onClick={decreaseFontScale}
 						size="icon"
 						variant="outline"
 					>
-						<AArrowDown aria-hidden="true" className="size-7" />
+						<AArrowDown aria-hidden="true" className="size-[24px] md:size-7" />
 					</Button>
-					{/* <output
+					<output
+						aria-live="polite"
 						aria-label="Tamanho atual do texto"
-						className="min-w-16 text-center font-semibold tabular-nums text-sidebar-foreground"
+						className="flex h-[44px] w-[76px] items-center justify-center border-y border-white/50 px-1 font-semibold tabular-nums text-sidebar-foreground md:h-11 md:w-auto md:min-w-14 md:px-2"
 					>
 						{fontScale}%
-					</output> */}
+					</output>
 					<Button
 						aria-label="Aumentar tamanho do texto"
-						className="border-white/50 bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/70"
+						className="size-[44px] border-white/50 bg-white text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/70 md:size-11"
 						disabled={!canIncreaseFontScale}
 						onClick={increaseFontScale}
 						size="icon"
 						variant="outline"
 					>
-						<AArrowUp aria-hidden="true" className="size-7" />
+						<AArrowUp aria-hidden="true" className="size-[24px] md:size-7" />
 					</Button>
 				</ButtonGroup>
 			</fieldset>
 
 			<fieldset className="flex min-w-0 flex-wrap items-center gap-2 border-0 p-0">
 				<legend className="sr-only">Leitura em voz alta</legend>
+
 				<Button
 					className="h-auto min-h-11 max-w-full whitespace-normal border-white/50 bg-white py-2 text-center text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/70"
 					disabled={status === "unsupported"}
@@ -134,8 +140,9 @@ export function AccessibilityToolbar() {
 					) : (
 						<Volume2 aria-hidden="true" data-icon="inline-start" />
 					)}
-					{speechButtonLabel}
+					<p className="hidden md:flex">{speechButtonLabel}</p>
 				</Button>
+
 				{(status === "speaking" || status === "paused") && (
 					<Button
 						className="h-auto min-h-11 max-w-full whitespace-normal border-white/60 bg-transparent py-2 text-center text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:border-white focus-visible:ring-white/70"
@@ -143,7 +150,7 @@ export function AccessibilityToolbar() {
 						variant="outline"
 					>
 						<Square aria-hidden="true" data-icon="inline-start" />
-						Parar
+						<p className="hidden md:flex">Parar</p>
 					</Button>
 				)}
 			</fieldset>

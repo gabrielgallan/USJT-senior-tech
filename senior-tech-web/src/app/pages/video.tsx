@@ -9,7 +9,7 @@ export function VideoPage() {
 	return (
 		<>
 			<BrowserTitle title="Veja como o golpe acontece" />
-			<section className="mx-auto w-full h-[calc(h-screen - 20)] max-w-7xl p-8 flex flex-col">
+			<section className="mx-auto w-full h-[calc(h-screen - 20)] max-w-7xl p-4 sm:px-6 sm:py-10 lg:px-8 lg:py-12 flex flex-col">
 				<Button
 					className="transition-all duration-100 w-fit flex items-center gap-2 hover:gap-4 cursor-pointer"
 					onClick={() => navigate("/")}
@@ -28,7 +28,7 @@ export function VideoPage() {
 
 				<Button
 					onClick={() => navigate("/quiz")}
-					className="w-full mt-auto cursor-pointer transition-all duration-200 ease-in-out hover:brightness-85 bg-sidebar text-white text-xl md:text-2xl font-bold flex items-center justify-center gap-4 px-4 py-6 rounded-2xl"
+					className="w-full mt-auto cursor-pointer transition-all duration-200 ease-in-out hover:brightness-85 bg-success text-white text-xl md:text-2xl font-bold flex items-center justify-center gap-4 px-4 py-6 rounded-2xl"
 				>
 					Continuar <ChevronRight className="size-6 md:size-12" />
 				</Button>
