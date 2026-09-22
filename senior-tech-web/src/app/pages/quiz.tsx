@@ -95,7 +95,7 @@ export function QuizPage() {
 		focusStepHeading();
 	};
 
-	const navigate = useNavigate()
+	const navigate = useNavigate();
 
 	const resultMessage =
 		RESULT_MESSAGES[score as keyof typeof RESULT_MESSAGES] ??
@@ -222,7 +222,7 @@ export function QuizPage() {
 								readOnly={isReviewing}
 								value={selectedOptionId}
 							>
-								{currentQuestion.options.map((option, optionIndex) => {
+								{currentQuestion.options.map((option, _optionIndex) => {
 									const inputId = `${currentQuestion.id}-option-${option.id}`;
 									const isSelected = selectedOptionId === option.id;
 									const isCorrect =

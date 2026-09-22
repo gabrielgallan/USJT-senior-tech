@@ -18,7 +18,10 @@ export function DefaultLayout() {
 						className="flex min-h-11 max-w-full items-center gap-3 rounded-lg font-bold text-lg outline-none focus-visible:ring-3 focus-visible:ring-sidebar-ring/80 sm:text-xl"
 						to="/"
 					>
-						<ShieldCheck aria-hidden="true" className="size-6 shrink-0 sm:size-7" />
+						<ShieldCheck
+							aria-hidden="true"
+							className="size-6 shrink-0 sm:size-7"
+						/>
 						<span>Pare, Pense e Confirme</span>
 					</Link>
 					<AccessibilityToolbar />
