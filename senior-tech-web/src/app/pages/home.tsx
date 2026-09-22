@@ -1,10 +1,5 @@
 import { BrowserTitle } from "@/components/browser-title";
-import {
-	ArrowRight,
-	BadgeQuestionMark,
-	Play,
-	ShieldAlert,
-} from "lucide-react";
+import { ArrowRight, BadgeQuestionMark, Play, ShieldAlert } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import homeImage2 from "../../assets/home_2.png";
@@ -91,8 +86,7 @@ export function HomePage() {
 								Praticar com o quiz
 							</span>
 							<span className="mt-1 block leading-relaxed">
-								Analise cinco situações do dia a dia e escolha a atitude mais
-								segura.
+								Analise situações do dia a dia e escolha a atitude mais segura.
 							</span>
 						</span>
 						<ArrowRight

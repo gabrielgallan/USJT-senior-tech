@@ -1,7 +1,6 @@
 import { useAccessibility } from "@/components/accessibility-provider";
 import { useSpeech } from "@/components/speech-provider";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import {
 	AArrowDown,
 	AArrowUp,

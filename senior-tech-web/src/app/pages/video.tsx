@@ -1,5 +1,5 @@
 import { BrowserTitle } from "@/components/browser-title";
-import { Button } from "@base-ui/react/button";
+import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +11,7 @@ export function VideoPage() {
 			<BrowserTitle title="Veja como o golpe acontece" />
 			<section className="mx-auto w-full h-[calc(h-screen - 20)] max-w-7xl p-4 sm:px-6 sm:py-10 lg:px-8 lg:py-12 flex flex-col">
 				<Button
+					variant="ghost"
 					className="transition-all duration-100 w-fit flex items-center gap-2 hover:gap-4 cursor-pointer"
 					onClick={() => navigate("/")}
 				>
