@@ -29,7 +29,8 @@ export function VideoPage() {
 
 				<Button
 					onClick={() => navigate("/quiz")}
-					className="w-full mt-auto cursor-pointer transition-all duration-200 ease-in-out hover:brightness-85 bg-success text-white text-xl md:text-2xl font-bold flex items-center justify-center gap-4 px-4 py-6 rounded-2xl"
+					variant="success"
+					className="w-full mt-auto cursor-pointer text-white text-xl md:text-2xl font-bold flex items-center justify-center gap-4 px-4 py-10 rounded-2xl"
 				>
 					Continuar <ChevronRight className="size-6 md:size-12" />
 				</Button>

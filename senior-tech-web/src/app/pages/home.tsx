@@ -86,7 +86,8 @@ export function HomePage() {
 								Praticar com o quiz
 							</span>
 							<span className="mt-1 block leading-relaxed">
-								Analise situações do dia a dia e escolha a atitude mais segura.
+								Analise cinco situações do dia a dia e escolha a atitude mais
+								segura.
 							</span>
 						</span>
 						<ArrowRight

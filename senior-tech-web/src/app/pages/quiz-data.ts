@@ -9,7 +9,7 @@ export type QuizQuestion = {
 	scenario: string;
 	options: readonly QuizOption[];
 	correctOptionId: string;
-	explanation: string;
+	successText: string;
 };
 
 export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
@@ -36,8 +36,8 @@ export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
 			},
 		],
 		correctOptionId: "b",
-		explanation:
-			"A foto do perfil, as mensagens e até um áudio podem ser usados por golpistas. Antes de enviar dinheiro, confirme o pedido por um número ou canal que você já conhece.",
+		successText:
+			"Golpistas usam fotos públicas das redes sociais para criar perfis falsos no WhatsApp. Nunca transfira dinheiro para um “novo número” de um parente sem antes falar com a pessoa pelo número antigo, fazer uma chamada de vídeo ou confirmar pessoalmente. Se a pessoa der desculpas para não atender, desconfie: pode ser golpe!",
 	},
 	{
 		id: "bloqueio-conta",
@@ -62,7 +62,86 @@ export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
 			},
 		],
 		correctOptionId: "c",
-		explanation:
-			"Bancos não pedem atualizações urgentes por links recebidos em mensagens. Abra você mesmo o aplicativo oficial do banco ou ligue para o telefone impresso no cartão.",
+		successText:
+			"Bancos nunca enviam links por SMS ou WhatsApp exigindo atualização cadastral ou ameaçando bloqueio imediato da conta. Esses links podem levar a páginas falsas que roubam senhas e dados bancários. Em caso de dúvida, abra o aplicativo oficial do banco ou consulte seu gerente por um canal verificado.",
+	},
+	{
+		id: "codigo-sms",
+		title: "O que você faria ao receber um pedido de código SMS?",
+		scenario:
+			"Você está aguardando a confirmação de um sorteio ou o agendamento de uma consulta médica. Uma pessoa liga ou envia uma mensagem dizendo: “Para confirmar seu atendimento ou sorteio, acabei de enviar um código de 6 dígitos por SMS. Pode me dizer esse código agora?”",
+		options: [
+			{
+				id: "a",
+				label:
+					"Não passaria o código de jeito nenhum e desligaria a ligação ou ignoraria a mensagem.",
+			},
+			{
+				id: "b",
+				label:
+					"Olharia o SMS e ditaria os 6 dígitos para a pessoa continuar o cadastro.",
+			},
+			{
+				id: "c",
+				label:
+					"Passaria o código, desde que a pessoa dissesse meu nome completo e CPF.",
+			},
+		],
+		correctOptionId: "a",
+		successText:
+			"Esse código de 6 dígitos pode ser a verificação usada para instalar sua conta do WhatsApp em outro celular. Se você informar o código, o golpista pode tomar sua conta e pedir dinheiro aos seus contatos em seu nome. Nenhuma empresa séria solicita códigos recebidos por SMS!",
+	},
+	{
+		id: "falsa-central",
+		title:
+			"O que você faria com uma ligação sobre compra suspeita ou recadastramento do INSS?",
+		scenario:
+			"Você recebe uma ligação da “Central de Segurança do Banco” ou do “INSS”: “Identificamos uma compra suspeita de R$ 2.500 no seu cartão. Para cancelar essa transação e proteger sua aposentadoria, preciso que você confirme sua senha e digite-a no teclado do telefone.”",
+		options: [
+			{
+				id: "a",
+				label:
+					"Digitaria a senha imediatamente para evitar que o valor de R$ 2.500 fosse cobrado.",
+			},
+			{
+				id: "b",
+				label:
+					"Desligaria a ligação, aguardaria alguns minutos ou usaria outro telefone e ligaria diretamente para o número oficial do banco ou do INSS.",
+			},
+			{
+				id: "c",
+				label:
+					"Pediria para a pessoa falar com meu filho e forneceria o número dele.",
+			},
+		],
+		correctOptionId: "b",
+		successText:
+			"Esse é o golpe da falsa central de atendimento. Nem o INSS nem os bancos ligam solicitando senha, código de acesso ou transferências de “segurança”. Ao receber uma chamada desse tipo, desligue e procure o órgão pelo aplicativo, site ou telefone oficial.",
+	},
+	{
+		id: "falsa-indenizacao",
+		title:
+			"O que você faria ao receber uma mensagem sobre liberação de indenização?",
+		scenario:
+			"Uma pessoa se apresenta como “secretário do escritório de advocacia” e manda a mensagem: “Boa notícia! Seu processo judicial ou revisão de benefício foi aprovado e você tem R$ 45.000 para receber. Porém, para liberar o alvará do juiz, é necessário pagar hoje uma taxa de custas cartorárias no valor de R$ 1.200.”",
+		options: [
+			{
+				id: "a",
+				label:
+					"Pagaria a taxa de R$ 1.200 imediatamente para garantir o recebimento dos R$ 45.000.",
+			},
+			{
+				id: "b",
+				label: "Pediria um desconto na taxa antes de fazer a transferência.",
+			},
+			{
+				id: "c",
+				label:
+					"Entraria em contato diretamente com meu advogado de confiança, usando o número antigo de contato, antes de realizar qualquer pagamento.",
+			},
+		],
+		correctOptionId: "c",
+		successText:
+			"Golpistas podem monitorar diários oficiais e processos públicos para descobrir nomes de beneficiários e advogados. Juízes e advogados não exigem pagamento prévio via Pix para uma conta de terceiros como condição para liberar indenizações. Confirme sempre com seu advogado, pessoalmente ou por um canal já verificado.",
 	},
 ];

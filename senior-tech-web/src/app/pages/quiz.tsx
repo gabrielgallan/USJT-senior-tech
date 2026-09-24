@@ -30,11 +30,17 @@ import { QUIZ_QUESTIONS } from "./quiz-data";
 
 type QuizStatus = "answering" | "reviewing" | "completed";
 
-const RESULT_MESSAGES = {
-	0: "Tudo bem errar durante o treino. Refaça o quiz e observe as orientações depois de cada resposta.",
-	1: "Bom começo! Você já reconheceu alguns sinais. Refaça o quiz para reforçar o que aprendeu.",
-	2: "Excelente! Você identificou as atitudes mais seguras nas duas situações.",
-} as const;
+function getResultMessage(score: number, totalQuestions: number) {
+	if (score === totalQuestions) {
+		return "Excelente! Você identificou as atitudes mais seguras nas cinco situações.";
+	}
+
+	if (score >= 3) {
+		return "Bom trabalho! Você reconheceu vários sinais de golpe. Refaça o quiz para revisar as situações em que ainda teve dúvida.";
+	}
+
+	return "Tudo bem errar durante o treino. Refaça o quiz e observe com atenção as orientações depois de cada resposta.";
+}
 
 export function QuizPage() {
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -97,9 +103,7 @@ export function QuizPage() {
 
 	const navigate = useNavigate();
 
-	const resultMessage =
-		RESULT_MESSAGES[score as keyof typeof RESULT_MESSAGES] ??
-		RESULT_MESSAGES[0];
+	const resultMessage = getResultMessage(score, totalQuestions);
 
 	return (
 		<>
@@ -112,6 +116,7 @@ export function QuizPage() {
 				>
 					<ChevronLeft /> Voltar
 				</Button>
+				<h1 className="sr-only">Quiz de segurança</h1>
 
 				{/* <header className="mt-4 max-w-[70ch]">
 					<h1 className="text-3xl font-bold tracking-tight text-primary">
@@ -276,7 +281,7 @@ export function QuizPage() {
 											</ItemMedia>
 											<ItemContent className="min-w-0 gap-0">
 												<ItemTitle className="line-clamp-none w-auto items-start text-base leading-relaxed font-medium whitespace-normal">
-													<span className="min-w-0 flex-1 wrap:anywhere">
+													<span className="min-w-0 flex-1 [overflow-wrap:anywhere]">
 														{option.label}
 													</span>
 												</ItemTitle>
@@ -335,10 +340,11 @@ export function QuizPage() {
 												? "Boa escolha!"
 												: "Atenção: essa escolha pode trazer riscos."}
 										</h3>
-										<p className="mt-2 leading-relaxed">
-											{currentQuestion.explanation}
-										</p>
-										{!selectedAnswerIsCorrect && (
+										{selectedAnswerIsCorrect ? (
+											<p className="mt-2 leading-relaxed">
+												{currentQuestion.successText}
+											</p>
+										) : (
 											<p className="mt-2 leading-relaxed">
 												<strong>Resposta mais segura:</strong>{" "}
 												{
