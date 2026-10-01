@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: senior-tech
+    runtime: static
+    rootDir: senior-tech-web
+    buildCommand: pnpm install --frozen-lockfile && pnpm build
+    staticPublishPath: ./build/client
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /__spa-fallback.html

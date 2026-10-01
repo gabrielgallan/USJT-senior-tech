@@ -123,6 +123,11 @@ html[data-font-scale="200"] {
 	font-size: 200%;
 }
 
+html.no-js [data-js-only],
+html.js [data-no-js-only] {
+	display: none !important;
+}
+
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
@@ -134,10 +139,6 @@ html[data-font-scale="200"] {
 
 	body {
 		@apply min-h-screen bg-background text-foreground antialiased;
-	}
-
-	#root {
-		@apply flex min-h-screen flex-col;
 	}
 
 	h1,

@@ -1,4 +1,3 @@
-import { BrowserTitle } from "@/components/browser-title";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
 	Item,
@@ -25,10 +24,19 @@ import {
 	TriangleAlert,
 } from "lucide-react";
 import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, type MetaFunction } from "react-router";
 import { QUIZ_QUESTIONS } from "./quiz-data";
 
 type QuizStatus = "answering" | "reviewing" | "completed";
+
+export const meta: MetaFunction = () => [
+	{ title: "Quiz de segurança | Senior Tech" },
+	{
+		content:
+			"Pratique como agir com segurança em cinco situações comuns de golpes virtuais.",
+		name: "description",
+	},
+];
 
 function getResultMessage(score: number, totalQuestions: number) {
 	if (score === totalQuestions) {
@@ -42,7 +50,49 @@ function getResultMessage(score: number, totalQuestions: number) {
 	return "Tudo bem errar durante o treino. Refaça o quiz e observe com atenção as orientações depois de cada resposta.";
 }
 
-export function QuizPage() {
+function StaticQuizGuide() {
+	return (
+		<section className="mt-7" data-no-js-only>
+			<header className="max-w-[70ch]">
+				<h2 className="text-2xl font-bold text-primary">
+					Guia das cinco situações
+				</h2>
+				<p className="mt-3 text-lg leading-relaxed">
+					O modo interativo do quiz precisa de JavaScript. Enquanto isso, leia
+					as situações abaixo e conheça a atitude mais segura em cada uma.
+				</p>
+			</header>
+
+			<ol className="mt-7 divide-y divide-border rounded-xl bg-card ring-1 ring-foreground/10">
+				{QUIZ_QUESTIONS.map((question, index) => {
+					const safeOption = question.options.find(
+						(option) => option.id === question.correctOptionId,
+					);
+
+					return (
+						<li className="p-5 sm:p-7" key={question.id}>
+							<article>
+								<h3 className="text-xl font-bold leading-snug">
+									{index + 1}. {question.title}
+								</h3>
+								<p className="mt-4 rounded-xl bg-secondary p-4 text-lg leading-relaxed">
+									{question.scenario}
+								</p>
+								<p className="mt-5 leading-relaxed">
+									<strong className="text-success">Atitude mais segura:</strong>{" "}
+									{safeOption?.label}
+								</p>
+								<p className="mt-3 leading-relaxed">{question.successText}</p>
+							</article>
+						</li>
+					);
+				})}
+			</ol>
+		</section>
+	);
+}
+
+export default function QuizPage() {
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
 	const [selectedOptionId, setSelectedOptionId] = useState("");
 	const [score, setScore] = useState(0);
@@ -101,33 +151,22 @@ export function QuizPage() {
 		focusStepHeading();
 	};
 
-	const navigate = useNavigate();
-
 	const resultMessage = getResultMessage(score, totalQuestions);
 
 	return (
-		<>
-			<BrowserTitle title="Quiz de segurança" />
-			<section className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
-				<Button
-					variant="ghost"
-					className="transition-all duration-100 w-fit flex items-center gap-2 hover:gap-4 cursor-pointer"
-					onClick={() => navigate("/")}
-				>
-					<ChevronLeft /> Voltar
-				</Button>
-				<h1 className="sr-only">Quiz de segurança</h1>
+		<section className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+			<Link
+				className={cn(
+					buttonVariants({ variant: "ghost" }),
+					"w-fit gap-2 transition-[gap] duration-200 hover:gap-4",
+				)}
+				to="/"
+			>
+				<ChevronLeft aria-hidden="true" /> Voltar
+			</Link>
+			<h1 className="sr-only">Quiz de segurança</h1>
 
-				{/* <header className="mt-4 max-w-[70ch]">
-					<h1 className="text-3xl font-bold tracking-tight text-primary">
-						Quiz de segurança
-					</h1>
-					<p className="mt-3 text-lg leading-relaxed">
-						Leia cada situação, escolha a atitude que considera mais segura e
-						confirme sua resposta.
-					</p>
-				</header> */}
-
+			<div data-js-only>
 				<Progress
 					aria-label={
 						status === "completed"
@@ -392,7 +431,9 @@ export function QuizPage() {
 						</div>
 					</article>
 				)}
-			</section>
-		</>
+			</div>
+
+			<StaticQuizGuide />
+		</section>
 	);
 }

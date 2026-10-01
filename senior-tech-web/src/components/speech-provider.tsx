@@ -1,6 +1,11 @@
 import * as React from "react";
 
-export type SpeechStatus = "idle" | "speaking" | "paused" | "unsupported";
+export type SpeechStatus =
+	| "checking"
+	| "idle"
+	| "speaking"
+	| "paused"
+	| "unsupported";
 
 type SpeechProviderProps = {
 	children: React.ReactNode;
@@ -20,7 +25,11 @@ const SpeechContext = React.createContext<SpeechProviderState | undefined>(
 );
 
 function supportsSpeechSynthesis() {
-	return "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+	return (
+		typeof window !== "undefined" &&
+		"speechSynthesis" in window &&
+		"SpeechSynthesisUtterance" in window
+	);
 }
 
 function normalizeSpeechContent(content: string | string[]) {
@@ -38,17 +47,13 @@ function selectPortugueseVoice() {
 }
 
 export function SpeechProvider({ children }: SpeechProviderProps) {
-	const supported = supportsSpeechSynthesis();
-	const [status, setStatus] = React.useState<SpeechStatus>(
-		supported ? "idle" : "unsupported",
-	);
+	const [status, setStatus] = React.useState<SpeechStatus>("checking");
 	const [announcement, setAnnouncement] = React.useState(
-		supported
-			? "Leitura em voz alta pronta."
-			: "A leitura em voz alta não está disponível neste navegador.",
+		"Verificando a disponibilidade da leitura em voz alta.",
 	);
 	const sessionRef = React.useRef(0);
 	const statusRef = React.useRef<SpeechStatus>(status);
+	const supportedRef = React.useRef(false);
 	const voiceRef = React.useRef<SpeechSynthesisVoice | undefined>(undefined);
 
 	React.useEffect(() => {
@@ -56,9 +61,20 @@ export function SpeechProvider({ children }: SpeechProviderProps) {
 	}, [status]);
 
 	React.useEffect(() => {
+		const supported = supportsSpeechSynthesis();
 		if (!supported) {
-			return undefined;
+			statusRef.current = "unsupported";
+			setStatus("unsupported");
+			setAnnouncement(
+				"A leitura em voz alta não está disponível neste navegador.",
+			);
+			return;
 		}
+
+		supportedRef.current = true;
+		statusRef.current = "idle";
+		setStatus("idle");
+		setAnnouncement("Leitura em voz alta pronta.");
 
 		const updateVoice = () => {
 			voiceRef.current = selectPortugueseVoice();
@@ -69,13 +85,14 @@ export function SpeechProvider({ children }: SpeechProviderProps) {
 
 		return () => {
 			sessionRef.current += 1;
+			supportedRef.current = false;
 			window.speechSynthesis.cancel();
 			window.speechSynthesis.removeEventListener("voiceschanged", updateVoice);
 		};
-	}, [supported]);
+	}, []);
 
 	const stop = React.useCallback(() => {
-		if (!supported) {
+		if (!supportedRef.current) {
 			return;
 		}
 
@@ -89,11 +106,11 @@ export function SpeechProvider({ children }: SpeechProviderProps) {
 		if (wasActive) {
 			setAnnouncement("Leitura interrompida.");
 		}
-	}, [supported]);
+	}, []);
 
 	const speak = React.useCallback(
 		(content: string | string[]) => {
-			if (!supported) {
+			if (!supportedRef.current) {
 				setAnnouncement(
 					"A leitura em voz alta não está disponível neste navegador.",
 				);
@@ -150,11 +167,11 @@ export function SpeechProvider({ children }: SpeechProviderProps) {
 			setAnnouncement("Leitura iniciada.");
 			speakSegment(0);
 		},
-		[stop, supported],
+		[stop],
 	);
 
 	const pause = React.useCallback(() => {
-		if (!supported || statusRef.current !== "speaking") {
+		if (!supportedRef.current || statusRef.current !== "speaking") {
 			return;
 		}
 
@@ -162,10 +179,10 @@ export function SpeechProvider({ children }: SpeechProviderProps) {
 		statusRef.current = "paused";
 		setStatus("paused");
 		setAnnouncement("Leitura pausada.");
-	}, [supported]);
+	}, []);
 
 	const resume = React.useCallback(() => {
-		if (!supported || statusRef.current !== "paused") {
+		if (!supportedRef.current || statusRef.current !== "paused") {
 			return;
 		}
 
@@ -173,7 +190,7 @@ export function SpeechProvider({ children }: SpeechProviderProps) {
 		statusRef.current = "speaking";
 		setStatus("speaking");
 		setAnnouncement("Leitura retomada.");
-	}, [supported]);
+	}, []);
 
 	const value = React.useMemo(
 		() => ({ announcement, pause, resume, speak, status, stop }),

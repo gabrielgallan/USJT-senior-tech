@@ -10,7 +10,7 @@ import {
 	Volume2,
 } from "lucide-react";
 import * as React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import { ButtonGroup } from "./ui/button-group";
 
 const SPEECH_SELECTOR =
@@ -84,12 +84,17 @@ export function AccessibilityToolbar() {
 			? "Pausar"
 			: status === "paused"
 				? "Continuar"
-				: status === "unsupported"
-					? "Áudio indisponível"
-					: "Ouvir página";
+				: status === "checking"
+					? "Verificando áudio"
+					: status === "unsupported"
+						? "Áudio indisponível"
+						: "Ouvir página";
 
 	return (
-		<div className="flex w-full min-w-0 flex-wrap items-center justify-between gap-2 md:w-auto md:justify-end md:gap-3">
+		<div
+			className="flex w-full min-w-0 flex-wrap items-center justify-between gap-2 md:w-auto md:justify-end md:gap-3"
+			data-js-only
+		>
 			<fieldset className="flex min-w-0 items-center gap-2 border-0 p-0">
 				<legend className="sr-only">Ajustar tamanho do texto</legend>
 				<ButtonGroup>
@@ -128,7 +133,7 @@ export function AccessibilityToolbar() {
 
 				<Button
 					className="h-auto min-h-11 max-w-full whitespace-normal border-white/50 bg-white py-2 text-center text-primary hover:bg-white/90 focus-visible:border-white focus-visible:ring-white/70"
-					disabled={status === "unsupported"}
+					disabled={status === "checking" || status === "unsupported"}
 					onClick={handleReadButton}
 					variant="outline"
 				>
@@ -139,7 +144,7 @@ export function AccessibilityToolbar() {
 					) : (
 						<Volume2 aria-hidden="true" data-icon="inline-start" />
 					)}
-					<p className="hidden md:flex">{speechButtonLabel}</p>
+					<span className="hidden md:inline">{speechButtonLabel}</span>
 				</Button>
 
 				{(status === "speaking" || status === "paused") && (
@@ -149,7 +154,7 @@ export function AccessibilityToolbar() {
 						variant="outline"
 					>
 						<Square aria-hidden="true" data-icon="inline-start" />
-						<p className="hidden md:flex">Parar</p>
+						<span className="hidden md:inline">Parar</span>
 					</Button>
 				)}
 			</fieldset>

@@ -1,8 +1,8 @@
 import { AccessibilityToolbar } from "@/components/accessibility-toolbar";
 import { ShieldCheck } from "lucide-react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router";
 
-export function DefaultLayout() {
+export default function DefaultLayout() {
 	return (
 		<div className="flex min-h-screen flex-1 flex-col">
 			<a
@@ -25,6 +25,13 @@ export function DefaultLayout() {
 						<span>Pare, Pense e Confirme</span>
 					</Link>
 					<AccessibilityToolbar />
+					<p
+						className="max-w-[65ch] rounded-lg bg-white/15 px-3 py-2 text-sm leading-relaxed"
+						data-no-js-only
+					>
+						Os controles de áudio e tamanho do texto precisam de JavaScript.
+						Você ainda pode usar o zoom e a leitura de tela do navegador.
+					</p>
 				</div>
 			</header>
 

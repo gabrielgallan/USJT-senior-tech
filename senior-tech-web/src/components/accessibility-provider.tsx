@@ -26,21 +26,37 @@ function isFontScale(value: number): value is FontScale {
 	return FONT_SCALES.some((fontScale) => fontScale === value);
 }
 
-function getInitialFontScale(): FontScale {
-	const storedValue = Number(localStorage.getItem(FONT_SCALE_STORAGE_KEY));
-	return isFontScale(storedValue) ? storedValue : 100;
-}
-
 export function AccessibilityProvider({
 	children,
 }: AccessibilityProviderProps) {
-	const [fontScale, setFontScale] =
-		React.useState<FontScale>(getInitialFontScale);
+	const [fontScale, setFontScale] = React.useState<FontScale>(100);
+	const [storageReady, setStorageReady] = React.useState(false);
+
+	React.useEffect(() => {
+		try {
+			const storedValue = Number(localStorage.getItem(FONT_SCALE_STORAGE_KEY));
+			if (isFontScale(storedValue)) {
+				setFontScale(storedValue);
+			}
+		} catch {
+			// Storage can be blocked by browser privacy settings.
+		} finally {
+			setStorageReady(true);
+		}
+	}, []);
 
 	React.useLayoutEffect(() => {
+		if (!storageReady) {
+			return;
+		}
+
 		document.documentElement.dataset.fontScale = String(fontScale);
-		localStorage.setItem(FONT_SCALE_STORAGE_KEY, String(fontScale));
-	}, [fontScale]);
+		try {
+			localStorage.setItem(FONT_SCALE_STORAGE_KEY, String(fontScale));
+		} catch {
+			// The control remains useful even if browser storage is unavailable.
+		}
+	}, [fontScale, storageReady]);
 
 	React.useEffect(() => {
 		const handleStorageChange = (event: StorageEvent) => {

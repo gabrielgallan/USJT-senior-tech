@@ -43,11 +43,39 @@ pnpm install
 pnpm dev
 ```
 
-5. A aplicação estará disponível na url informado pelo Vite, normalmente:
+5. A aplicação estará disponível na URL informada pelo React Router, normalmente:
 
 ```bash
 http://localhost:5173
 ```
+
+## Build estático
+
+O projeto pré-renderiza as rotas `/`, `/video` e `/quiz`. Para validar os
+tipos e gerar os arquivos estáticos:
+
+```bash
+pnpm typecheck
+pnpm build
+```
+
+Os arquivos publicados são gerados em `senior-tech-web/build/client`. Quando
+o JavaScript não está disponível, as páginas continuam exibindo seu conteúdo;
+o quiz apresenta um guia estático com as cinco situações de segurança.
+
+## Publicação no Render
+
+Mantenha o projeto como **Static Site** e use estas configurações:
+
+- Root Directory: `senior-tech-web`
+- Build Command: `pnpm install --frozen-lockfile && pnpm build`
+- Publish Directory: `build/client`
+- Rewrite: `/*` para `/__spa-fallback.html`
+
+As rotas pré-renderizadas existentes são servidas diretamente. O rewrite é
+usado apenas como fallback para caminhos que não correspondem a um arquivo
+gerado. Esses valores também estão versionados no `render.yaml` da raiz do
+repositório e podem ser usados por um Blueprint do Render.
 
 ## Contribuidores
 
