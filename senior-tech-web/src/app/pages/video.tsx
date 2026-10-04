@@ -1,7 +1,10 @@
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link, type MetaFunction } from "react-router";
+import { buttonVariants } from "@/components/ui/button";
+import { VideoPlayer } from "@/components/video-player";
+import { cn } from "@/lib/utils";
+import videoSrc from "../../assets/video.mp4";
+import videoPoster from "../../assets/video-poster.jpg";
 
 export const meta: MetaFunction = () => [
 	{ title: "Veja como o golpe acontece | Senior Tech" },
@@ -33,6 +36,8 @@ export default function VideoPage() {
 					<strong>Você teria percebido o golpe?</strong>
 				</p>
 			</div>
+
+			<VideoPlayer poster={videoPoster} src={videoSrc} />
 
 			<Link
 				className={cn(
