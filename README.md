@@ -51,7 +51,7 @@ http://localhost:5173
 
 ## Build estático
 
-O projeto pré-renderiza as rotas `/`, `/video` e `/quiz`. Para validar os
+O projeto pré-renderiza as rotas `/`, `/video`, `/reflexao` e `/quiz`. Para validar os
 tipos e gerar os arquivos estáticos:
 
 ```bash
@@ -61,7 +61,8 @@ pnpm build
 
 Os arquivos publicados são gerados em `senior-tech-web/build/client`. Quando
 o JavaScript não está disponível, as páginas continuam exibindo seu conteúdo;
-o quiz apresenta um guia estático com as cinco situações de segurança.
+a reflexão mostra as orientações e o link para o quiz, que apresenta um guia
+estático com as cinco situações de segurança.
 
 ## Publicação no Render
 

@@ -14,30 +14,30 @@ export type QuizQuestion = {
 
 export const QUIZ_QUESTIONS: readonly QuizQuestion[] = [
 	{
-		id: "pedido-pix",
-		title: "O que você faria ao receber um pedido urgente de dinheiro?",
+		id: "falsa-entrega",
+		title: "O que você faria ao receber uma cobrança para liberar uma entrega?",
 		scenario:
-			"Você recebe uma mensagem no WhatsApp de um número desconhecido, mas a foto de perfil é do seu filho. A pessoa diz: “Oi mãe/pai, troquei de número porque o meu quebrou. Preciso pagar uma conta urgente hoje e meu aplicativo do banco travou. Pode fazer um Pix para mim de R$ 800 que te devolvo amanhã?”",
+			"Você recebe uma mensagem dizendo: “Sua encomenda está retida. Para receber hoje, pague uma taxa de R$ 7,90 por Pix usando a chave abaixo.” A mensagem menciona uma entrega que você está aguardando e pede o pagamento imediatamente.",
 		options: [
 			{
 				id: "a",
 				label:
-					"Faria o Pix imediatamente para ajudar, pois parece ser uma urgência.",
+					"Pagaria a taxa pela chave Pix enviada na mensagem para receber a encomenda logo.",
 			},
 			{
 				id: "b",
 				label:
-					"Ligaria ou faria uma chamada de vídeo para o número antigo do meu filho para confirmar se é ele mesmo.",
+					"Responderia à mensagem pedindo que a pessoa confirmasse meu nome e endereço antes de pagar.",
 			},
 			{
 				id: "c",
 				label:
-					"Pediria que a pessoa enviasse um áudio confirmando a história antes de fazer o Pix.",
+					"Consultaria o rastreamento no aplicativo ou site oficial da transportadora, acessado por conta própria, antes de fazer qualquer pagamento.",
 			},
 		],
-		correctOptionId: "b",
+		correctOptionId: "c",
 		successText:
-			"Golpistas usam fotos públicas das redes sociais para criar perfis falsos no WhatsApp. Nunca transfira dinheiro para um “novo número” de um parente sem antes falar com a pessoa pelo número antigo, fazer uma chamada de vídeo ou confirmar pessoalmente. Se a pessoa der desculpas para não atender, desconfie: pode ser golpe!",
+			"Mensagens de falsa entrega podem usar uma taxa pequena e a pressa para convencer você a pagar sem conferir. Não faça pagamentos usando uma chave Pix recebida por mensagem. Consulte o rastreamento no aplicativo ou site oficial da transportadora e confirme por um canal de atendimento verificado se houver alguma cobrança.",
 	},
 	{
 		id: "bloqueio-conta",

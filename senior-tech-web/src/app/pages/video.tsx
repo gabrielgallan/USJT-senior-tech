@@ -32,7 +32,7 @@ export default function VideoPage() {
 					Veja como o golpe acontece
 				</h1>
 				<p className="mt-5 text-lg leading-relaxed text-foreground">
-					Assista ao vídeo e preste atenção nos detalhes. Depois, responda:{" "}
+					Assista ao vídeo e preste atenção aos detalhes. Depois, responda:{" "}
 					<strong>Você teria percebido o golpe?</strong>
 				</p>
 			</div>
@@ -44,7 +44,7 @@ export default function VideoPage() {
 					buttonVariants({ size: "lg", variant: "success" }),
 					"mt-10 h-auto min-h-12 w-full gap-4 whitespace-normal rounded-xl px-4 py-5 text-lg font-bold sm:mt-14 md:text-xl",
 				)}
-				to="/quiz"
+				to="/reflexao"
 			>
 				Continuar <ChevronRight aria-hidden="true" className="size-6" />
 			</Link>
