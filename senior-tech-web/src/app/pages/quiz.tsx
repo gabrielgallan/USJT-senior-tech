@@ -1,3 +1,17 @@
+import {
+	ArrowRight,
+	Check,
+	CheckCircle2,
+	ChevronLeft,
+	ExternalLink,
+	Hand,
+	House,
+	PhoneCall,
+	Search,
+	TriangleAlert,
+} from "lucide-react";
+import { useRef, useState } from "react";
+import { Link, type MetaFunction } from "react-router";
 import { Button, buttonVariants } from "@/components/ui/button";
 import {
 	Item,
@@ -13,18 +27,6 @@ import {
 } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
-import {
-	ArrowRight,
-	Check,
-	CheckCircle2,
-	ChevronLeft,
-	House,
-	RotateCcw,
-	ShieldCheck,
-	TriangleAlert,
-} from "lucide-react";
-import { useRef, useState } from "react";
-import { Link, type MetaFunction } from "react-router";
 import { QUIZ_QUESTIONS } from "./quiz-data";
 
 type QuizStatus = "answering" | "reviewing" | "completed";
@@ -44,10 +46,10 @@ function getResultMessage(score: number, totalQuestions: number) {
 	}
 
 	if (score >= 3) {
-		return "Bom trabalho! Você reconheceu vários sinais de golpe. Refaça o quiz para revisar as situações em que ainda teve dúvida.";
+		return "Bom trabalho! Você reconheceu vários sinais de golpe. Continue atento às situações em que ainda teve dúvida.";
 	}
 
-	return "Tudo bem errar durante o treino. Refaça o quiz e observe com atenção as orientações depois de cada resposta.";
+	return "Tudo bem errar durante o treino. Lembre-se de parar, pensar e confirmar antes de agir.";
 }
 
 function StaticQuizGuide() {
@@ -105,10 +107,7 @@ export default function QuizPage() {
 	const isReviewing = status === "reviewing";
 	const selectedAnswerIsCorrect =
 		selectedOptionId === currentQuestion?.correctOptionId;
-	const progressValue =
-		status === "completed"
-			? 100
-			: ((currentQuestionIndex + 1) / totalQuestions) * 100;
+	const progressValue = ((currentQuestionIndex + 1) / totalQuestions) * 100;
 
 	const focusStepHeading = () => {
 		requestAnimationFrame(() => stepHeadingRef.current?.focus());
@@ -143,14 +142,6 @@ export default function QuizPage() {
 		focusStepHeading();
 	};
 
-	const handleRestart = () => {
-		setCurrentQuestionIndex(0);
-		setSelectedOptionId("");
-		setScore(0);
-		setStatus("answering");
-		focusStepHeading();
-	};
-
 	const resultMessage = getResultMessage(score, totalQuestions);
 
 	return (
@@ -167,65 +158,144 @@ export default function QuizPage() {
 			<h1 className="sr-only">Quiz de segurança</h1>
 
 			<div data-js-only>
-				<Progress
-					aria-label={
-						status === "completed"
-							? "Quiz concluído"
-							: `Progresso: pergunta ${currentQuestionIndex + 1} de ${totalQuestions}`
-					}
-					className="mt-7"
-					value={progressValue}
-				>
-					<ProgressLabel>
-						{status === "completed"
-							? "Quiz concluído"
-							: `Pergunta ${currentQuestionIndex + 1} de ${totalQuestions}`}
-					</ProgressLabel>
-					<ProgressValue>
-						{(_formattedValue, value) => `${Math.round(value ?? 0)}%`}
-					</ProgressValue>
-				</Progress>
+				{status !== "completed" && (
+					<Progress
+						aria-label={`Progresso: pergunta ${currentQuestionIndex + 1} de ${totalQuestions}`}
+						className="mt-7"
+						value={progressValue}
+					>
+						<ProgressLabel>
+							{`Pergunta ${currentQuestionIndex + 1} de ${totalQuestions}`}
+						</ProgressLabel>
+						<ProgressValue>
+							{(_formattedValue, value) => `${Math.round(value ?? 0)}%`}
+						</ProgressValue>
+					</Progress>
+				)}
 
 				{status === "completed" ? (
-					<section className="mt-8 animate-in rounded-xl bg-card p-5 ring-1 ring-foreground/10 duration-200 fade-in motion-reduce:animate-none sm:p-7">
-						<div className="flex size-14 items-center justify-center rounded-xl bg-success text-success-foreground">
-							<ShieldCheck aria-hidden="true" className="size-8" />
-						</div>
-						<h2
-							className="mt-5 text-2xl font-bold text-foreground outline-none"
-							ref={stepHeadingRef}
-							tabIndex={-1}
-						>
-							Você concluiu o quiz
-						</h2>
-						<p className="mt-3 text-xl font-bold text-primary">
-							Você acertou {score} de {totalQuestions} perguntas.
-						</p>
-						<p className="mt-3 max-w-[65ch] text-lg leading-relaxed">
-							{resultMessage}
-						</p>
+					<div className="mt-7 animate-in duration-200 fade-in motion-reduce:animate-none">
+						<section className="rounded-xl border border-success/35 bg-card px-5 py-8 text-center sm:px-9 sm:py-10">
+							<div className="mx-auto flex size-20 items-center justify-center rounded-full bg-success text-success-foreground">
+								<Check aria-hidden="true" className="size-11 stroke-[2.5]" />
+							</div>
+							<h2
+								className="mt-5 text-2xl font-bold text-foreground outline-none"
+								ref={stepHeadingRef}
+								tabIndex={-1}
+							>
+								Você concluiu o quiz
+							</h2>
+							<p className="mt-2 text-xl font-bold text-primary">
+								Você acertou {score} de {totalQuestions} perguntas.
+							</p>
+							<p className="mx-auto mt-3 max-w-[65ch] text-lg leading-relaxed">
+								{resultMessage}
+							</p>
+						</section>
 
-						<div className="mt-7 flex flex-col gap-3 sm:flex-row">
-							<Button
-								className="h-auto min-h-12 whitespace-normal py-3"
-								onClick={handleRestart}
-								size="lg"
+						<section aria-labelledby="reminder-title" className="mt-9">
+							<h2
+								className="mb-4 text-2xl font-bold text-primary"
+								id="reminder-title"
 							>
-								<RotateCcw aria-hidden="true" />
-								Refazer o quiz
-							</Button>
-							<Link
-								className={cn(
-									buttonVariants({ size: "lg", variant: "outline" }),
-									"h-auto min-h-12 whitespace-normal py-3",
-								)}
-								to="/"
-							>
-								<House aria-hidden="true" />
-								Voltar ao início
-							</Link>
+								Lembre-se:
+							</h2>
+							<ol className="space-y-3">
+								{[
+									{
+										title: "Pare",
+										description:
+											"Não clique em links nem faça pagamentos por impulso.",
+										icon: Hand,
+										color: "text-warning",
+										background: "bg-warning/10",
+									},
+									{
+										title: "Pense",
+										description:
+											"Observe pedidos urgentes, links e informações que parecem estranhas.",
+										icon: Search,
+										color: "text-primary",
+										background: "bg-secondary",
+									},
+									{
+										title: "Confirme",
+										description:
+											"Fale com a pessoa ou instituição por um canal que você já conhece.",
+										icon: PhoneCall,
+										color: "text-success",
+										background: "bg-success/10",
+									},
+								].map((step, index) => {
+									const Icon = step.icon;
+									return (
+										<li
+											className="flex items-center gap-4 rounded-xl border border-border bg-card p-4 sm:gap-5 sm:p-5"
+											key={step.title}
+										>
+											<div
+												className={cn(
+													"flex size-14 shrink-0 items-center justify-center rounded-xl",
+													step.background,
+													step.color,
+												)}
+											>
+												<Icon aria-hidden="true" className="size-7" />
+											</div>
+											<div className="min-w-0">
+												<div className="flex items-center gap-3">
+													<span
+														className={cn(
+															"flex size-7 shrink-0 items-center justify-center rounded-full text-sm font-bold text-foreground",
+															step.background,
+														)}
+													>
+														{index + 1}
+													</span>
+													<h3 className="text-xl font-bold">{step.title}</h3>
+												</div>
+												<p className="mt-1 leading-relaxed">
+													{step.description}
+												</p>
+											</div>
+										</li>
+									);
+								})}
+							</ol>
+						</section>
+
+						<div className="mt-7">
+							<p className="text-lg leading-relaxed">
+								Sua opinião nos ajuda a melhorar. O formulário de avaliação abre
+								em uma nova aba.
+							</p>
+							<div className="mt-4 flex flex-col gap-3 sm:flex-row">
+								<Link
+									className={cn(
+										buttonVariants({ size: "lg", variant: "outline" }),
+										"h-auto min-h-12 w-full whitespace-normal py-3 sm:w-auto",
+									)}
+									to="/"
+								>
+									<House aria-hidden="true" />
+									Voltar para a home
+								</Link>
+								<a
+									className={cn(
+										buttonVariants({ size: "lg" }),
+										"h-auto min-h-12 w-full whitespace-normal py-3 sm:w-auto",
+									)}
+									href="https://forms.gle/uU2rwfKs2ufrLsQLA"
+									rel="noopener noreferrer"
+									target="_blank"
+								>
+									Avaliar este site
+									<ExternalLink aria-hidden="true" />
+								</a>
+							</div>
 						</div>
-					</section>
+					</div>
 				) : (
 					<article
 						className="mt-8 animate-in duration-200 fade-in slide-in-from-right-2 motion-reduce:animate-none"
