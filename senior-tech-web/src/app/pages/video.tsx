@@ -3,8 +3,9 @@ import { Link, type MetaFunction } from "react-router";
 import { buttonVariants } from "@/components/ui/button";
 import { VideoPlayer } from "@/components/video-player";
 import { cn } from "@/lib/utils";
-import videoSrc from "../../assets/video.mp4";
-import videoPoster from "../../assets/video-poster.jpg";
+
+const youtubeVideoUrl = "https://www.youtube.com/shorts/zZn9ejYODTM";
+const youtubeEmbedUrl = "https://www.youtube-nocookie.com/embed/zZn9ejYODTM";
 
 export const meta: MetaFunction = () => [
 	{ title: "Veja como o golpe acontece | Senior Tech" },
@@ -37,7 +38,11 @@ export default function VideoPage() {
 				</p>
 			</div>
 
-			<VideoPlayer poster={videoPoster} src={videoSrc} />
+			<VideoPlayer
+				embedUrl={youtubeEmbedUrl}
+				title="Situação simulada de golpe por mensagem"
+				videoUrl={youtubeVideoUrl}
+			/>
 
 			<Link
 				className={cn(
